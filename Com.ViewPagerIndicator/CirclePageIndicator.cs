@@ -28,7 +28,7 @@ using Android.Support.V4.Content;
 
 namespace Com.ViewPagerIndicator
 {
-	public class CirclePageIndicator : View, PageIndicator
+	public class CirclePageIndicator : ViewGroup, PageIndicator
 	{
 		const int HORIZONTAL = 0;
 		const int VERTICAL = 1;
@@ -427,6 +427,11 @@ namespace Com.ViewPagerIndicator
 			state.PutInt("mCurrentPage", mCurrentPage);
 
 			return state;
+		}
+
+		protected override void OnLayout(bool changed, int l, int t, int r, int b)
+		{
+			//throw new NotImplementedException(
 		}
 	}
 }
