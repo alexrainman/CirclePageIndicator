@@ -6,6 +6,8 @@ using Android.Support.V4.View;
 using Android.Util;
 using Java.Lang;
 using Android.Support.V4.Content;
+using Android.Runtime;
+using System;
 
 /*
  * Copyright 2013 Tomasz Cielecki
@@ -47,13 +49,17 @@ namespace Com.ViewPagerIndicator
 		private bool mCentered;
 		private bool mSnap;
 
-		private IndicatorsShape indicatorsStyle = IndicatorsShape.Circle;
+		private int indicatorsStyle = 1; // Circle by default
 
 		public CirclePageIndicator(Context context) : this(context, null)
 		{
 		}
 
-		public CirclePageIndicator(Context context, IAttributeSet attrs) : this(context, attrs, Resource.Attribute.vpiCirclePageIndicatorStyle)
+        public CirclePageIndicator(IntPtr intPtr, JniHandleOwnership jni) : base(intPtr, jni)
+        {
+        }
+
+        public CirclePageIndicator(Context context, IAttributeSet attrs) : this(context, attrs, Resource.Attribute.vpiCirclePageIndicatorStyle)
 		{
 		}
 
@@ -97,7 +103,6 @@ namespace Com.ViewPagerIndicator
 		{
 			mPaintPageFill.Color = fillColor;
 			Invalidate();
-
 		}
 
 		public void SetPageColor(Color pageColor)
@@ -106,13 +111,19 @@ namespace Com.ViewPagerIndicator
 			Invalidate();
 		}
 
-		public void SetStyle(IndicatorsShape style)
+		public void SetStyle(int style)
 		{
 			indicatorsStyle = style;
 			Invalidate();
 		}
 
-		protected override void OnDraw(Canvas canvas)
+        public void SetOrientation(int orientation)
+        {
+            mOrientation = orientation;
+            Invalidate();
+        }
+
+        protected override void OnDraw(Canvas canvas)
 		{
 			base.OnDraw(canvas);
 
@@ -187,7 +198,7 @@ namespace Com.ViewPagerIndicator
 				{
 					switch (indicatorsStyle)
 					{
-						case IndicatorsShape.Square:
+						case 2:
 							canvas.DrawRect(dX, dY, dX + (pageFillRadius * 2), dY + (pageFillRadius * 2), mPaintPageFill);
 							break;
 						default:
@@ -201,7 +212,7 @@ namespace Com.ViewPagerIndicator
 				{
 					switch (indicatorsStyle)
 					{
-						case IndicatorsShape.Square:
+						case 2:
 							canvas.DrawRect(dX, dY, dX + (this.mRadius * 2), dY + (this.mRadius * 2), mPaintStroke);
 							break;
 						default:
@@ -229,7 +240,7 @@ namespace Com.ViewPagerIndicator
 
 			switch (indicatorsStyle)
 			{
-				case IndicatorsShape.Square:
+				case 2:
 					canvas.DrawRect(dX, dY, dX + (this.mRadius * 2), dY + (this.mRadius * 2), mPaintFill);
 					break;
 				default:

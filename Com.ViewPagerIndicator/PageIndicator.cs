@@ -60,7 +60,8 @@ namespace Com.ViewPagerIndicator
 	     * Notify the indicator that the fragment list has changed.
 	     */
 		void NotifyDataSetChanged ();
-	}
 
+        void SetOrientation(int orientation);
+	}
 }
 

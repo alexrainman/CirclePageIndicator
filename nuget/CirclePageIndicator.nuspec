@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Xamarin.Android.CirclePageIndicator</id>
-        <version>1.0.1</version>
+        <version>1.0.3</version>
         <title>CirclePageIndicator for Xamarin Android ViewPager</title>
         <authors>Alex Rainman</authors>
         <owners>Alex Rainman</owners>
@@ -12,13 +12,15 @@
         <description>Com.ViewPagerIndicator CirclePageIndicator for Xamarin Android.</description>
         <summary>Com.ViewPagerIndicator CirclePageIndicator for Xamarin Android.</summary>
         <releaseNotes>
-        1.0.1
-        [Update] Extend from ViewGroup.
+1.0.3
+[Update] Missing Constructor fix
+1.0.1
+[Update] Extend from ViewGroup.
         </releaseNotes>
         <tags>circle page indicator viewpager android xamarin forms monodroid</tags>
         <dependencies>
 			 <group targetFramework="MonoAndroid10">
-	            <dependency id="Xamarin.Android.Support.v4" version="23.3.0"/>
+	            <dependency id="Xamarin.Android.Support.v4" version="28.0.0.1"/>
 	        </group>
 		</dependencies>
     </metadata>
