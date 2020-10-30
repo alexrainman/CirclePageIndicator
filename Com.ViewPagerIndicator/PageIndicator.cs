@@ -1,6 +1,4 @@
 
-using Android.Support.V4.View;
-
 /*
  * Copyright 2013 Tomasz Cielecki
  * Copyright 2012 Jake Wharton
@@ -19,6 +17,8 @@ using Android.Support.V4.View;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+using AndroidX.ViewPager.Widget;
 
 namespace Com.ViewPagerIndicator
 {

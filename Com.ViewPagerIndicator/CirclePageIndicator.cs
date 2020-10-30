@@ -2,12 +2,12 @@ using Android.Content;
 using Android.OS;
 using Android.Views;
 using Android.Graphics;
-using Android.Support.V4.View;
 using Android.Util;
 using Java.Lang;
-using Android.Support.V4.Content;
 using Android.Runtime;
 using System;
+using AndroidX.ViewPager.Widget;
+using AndroidX.Core.Content;
 
 /*
  * Copyright 2013 Tomasz Cielecki
@@ -49,7 +49,9 @@ namespace Com.ViewPagerIndicator
 		private bool mCentered;
 		private bool mSnap;
 
-		private int indicatorsStyle = 1; // Circle by default
+		private int mIndicatorsStyle = 1; // Circle by default
+
+        private bool mInfiniteScrolling;
 
 		public CirclePageIndicator(Context context) : this(context, null)
 		{
@@ -113,13 +115,19 @@ namespace Com.ViewPagerIndicator
 
 		public void SetStyle(int style)
 		{
-			indicatorsStyle = style;
+			mIndicatorsStyle = style;
 			Invalidate();
 		}
 
         public void SetOrientation(int orientation)
         {
             mOrientation = orientation;
+            Invalidate();
+        }
+
+        public void SetInfiniteScrolling(bool infiniteScrolling)
+        {
+            mInfiniteScrolling = infiniteScrolling;
             Invalidate();
         }
 
@@ -179,10 +187,14 @@ namespace Com.ViewPagerIndicator
 				pageFillRadius -= mPaintStroke.StrokeWidth / 2.0f;
 			}
 
-			//Draw stroked circles
-			for (int iLoop = 0; iLoop < count; iLoop++)
+            var mTransparent = new Paint(PaintFlags.AntiAlias);
+            mTransparent.SetStyle(Paint.Style.Fill);
+            mTransparent.Color = Color.Transparent;
+
+            //Draw stroked circles
+            for (int i = 0; i < count; i++)
 			{
-				float drawLong = longOffset + (iLoop * threeRadius);
+				float drawLong = longOffset + (i * threeRadius);
 				if (mOrientation == HORIZONTAL)
 				{
 					dX = drawLong;
@@ -193,16 +205,30 @@ namespace Com.ViewPagerIndicator
 					dY = drawLong;
 				}
 
-				// Only paint fill if not completely transparent
-				if (mPaintPageFill.Alpha > 0)
+                // Only paint fill if not completely transparent
+                if (mPaintPageFill.Alpha > 0)
 				{
-					switch (indicatorsStyle)
+					switch (mIndicatorsStyle)
 					{
 						case 2:
-							canvas.DrawRect(dX, dY, dX + (pageFillRadius * 2), dY + (pageFillRadius * 2), mPaintPageFill);
+                            if (mInfiniteScrolling && (i == 0 || i == count - 1))
+                            {
+                                canvas.DrawRect(dX, dY, dX + (pageFillRadius * 2), dY + (pageFillRadius * 2), mTransparent);
+                            }
+                            else
+                            {
+                                canvas.DrawRect(dX, dY, dX + (pageFillRadius * 2), dY + (pageFillRadius * 2), mPaintPageFill);
+                            }
 							break;
 						default:
-							canvas.DrawCircle(dX, dY, pageFillRadius, mPaintPageFill);
+                            if (mInfiniteScrolling && (i == 0 || i == count - 1))
+                            {
+                                canvas.DrawCircle(dX, dY, pageFillRadius, mTransparent);
+                            }
+                            else
+                            {
+                                canvas.DrawCircle(dX, dY, pageFillRadius, mPaintPageFill);
+                            }
 							break;
 					}
 				}
@@ -238,13 +264,27 @@ namespace Com.ViewPagerIndicator
 				dY = longOffset + cx;
 			}
 
-			switch (indicatorsStyle)
+			switch (mIndicatorsStyle)
 			{
 				case 2:
-					canvas.DrawRect(dX, dY, dX + (this.mRadius * 2), dY + (this.mRadius * 2), mPaintFill);
+                    if (mInfiniteScrolling && (mSnapPage == 0 || mSnapPage == count - 1) && count > 1)
+                    {
+                        canvas.DrawRect(dX, dY, dX + (this.mRadius * 2), dY + (this.mRadius * 2), mTransparent);
+                    }
+                    else
+                    {
+                        canvas.DrawRect(dX, dY, dX + (this.mRadius * 2), dY + (this.mRadius * 2), mPaintFill);
+                    }
 					break;
 				default:
-					canvas.DrawCircle(dX, dY, mRadius, mPaintFill);
+                    if (mInfiniteScrolling && (mSnapPage == 0 || mSnapPage == count - 1) && count > 1)
+                    {
+                        canvas.DrawCircle(dX, dY, mRadius, mTransparent);
+                    }
+                    else
+                    {
+                        canvas.DrawCircle(dX, dY, mRadius, mPaintFill);
+                    }
 					break;
 			}
 		}
