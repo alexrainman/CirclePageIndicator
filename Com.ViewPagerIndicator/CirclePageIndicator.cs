@@ -359,7 +359,6 @@ namespace Com.ViewPagerIndicator
 			if (mSnap || mScrollState == ViewPager.ScrollStateIdle)
 			{
 				mCurrentPage = position;
-				mSnapPage = position;
 				Invalidate();
 			}
 
